@@ -1,0 +1,82 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    padding: 20px;
+}
+
+.pokemon-list-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.pokemon-card {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    transition: transform 0.2s;
+}
+
+.pokemon-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.pokemon-name {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.pokedex-number {
+    color: #777;
+    font-size: 1em;
+    margin-bottom: 10px;
+}
+
+.type-container span {
+    display: inline-block;
+    padding: 5px 10px;
+    margin-right: 5px;
+    border-radius: 5px;
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+    font-size: 0.8em;
+}
+
+/* Basic Type Colors (you'll need a full set for a real application) */
+.type-grass {
+    background-color: #7AC74C;
+}
+
+.type-poison {
+    background-color: #A33EA1;
+}
+
+.type-fire {
+    background-color: #EE8130;
+}
+
+.stat-line {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px dashed #eee;
+    padding: 5px 0;
+    font-size: 0.9em;
+}
+
+.stat-value {
+    font-weight: bold;
+}
+
+.classification {
+    font-style: italic;
+    color: #999;
+    margin-top: 10px;
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+}

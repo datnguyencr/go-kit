@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Shared Folder</title>
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+<h1>Shared Folder</h1>
+
+<div id="upload-area">
+<form action="/upload" method="POST" enctype="multipart/form-data">
+  <input type="file" id="file-input" name="file" style="display:none" multiple>
+  <label id="drop-zone">Drag & Drop files here or click to upload</label>
+</form>
+</div>
+
+<div class="wave"></div>
+<div class="wave"></div>
+<div class="wave"></div>
+
+<ul>
+{{.Content}}
+</ul>
+
+<script>
+const dropZone = document.getElementById("drop-zone");
+const fileInput = document.getElementById("file-input");
+const form = fileInput.closest("form");
+
+function confirmUpload() {
+    if (!fileInput.files.length) {
+        alert("No file selected!");
+        return false;
+    }
+    return confirm(`Are you sure you want to upload ${fileInput.files.length} file(s)?`);
+}
+
+function handleFiles() {
+    if (confirmUpload()) {
+        form.submit();
+    }
+}
+
+dropZone.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    dropZone.style.background = "rgba(255,255,255,0.35)";
+});
+
+dropZone.addEventListener("dragleave", () => {
+    dropZone.style.background = "rgba(255,255,255,0.15)";
+});
+
+dropZone.addEventListener("drop", (e) => {
+    e.preventDefault();
+    fileInput.files = e.dataTransfer.files;
+    handleFiles();
+});
+
+dropZone.addEventListener("click", () => fileInput.click());
+
+fileInput.addEventListener("change", handleFiles);
+</script>
+
+</body>
+</html>

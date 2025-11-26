@@ -1,0 +1,77 @@
+package db
+
+import (
+	"sync"
+
+	"go.etcd.io/bbolt"
+)
+
+type BBoltHelper struct {
+	db  *bbolt.DB
+	mux sync.Mutex // for write safety
+}
+
+// Open or create database
+func Open(path string) (*BBoltHelper, error) {
+	db, err := bbolt.Open(path, 0600, nil)
+	if err != nil {
+		return nil, err
+	}
+	return &BBoltHelper{db: db}, nil
+}
+
+// Close DB
+func (h *BBoltHelper) Close() {
+	h.db.Close()
+}
+
+// Create a bucket if not exists
+func (h *BBoltHelper) CreateBucket(bucket string) error {
+	return h.db.Update(func(tx *bbolt.Tx) error {
+		_, err := tx.CreateBucketIfNotExists([]byte(bucket))
+		return err
+	})
+}
+
+// Put key-value
+func (h *BBoltHelper) Put(bucket, key, value string) error {
+	h.mux.Lock()
+	defer h.mux.Unlock()
+	return h.db.Update(func(tx *bbolt.Tx) error {
+		b := tx.Bucket([]byte(bucket))
+		if b == nil {
+			return bbolt.ErrBucketNotFound
+		}
+		return b.Put([]byte(key), []byte(value))
+	})
+}
+
+// Get value by key
+func (h *BBoltHelper) Get(bucket, key string) (string, error) {
+	var val []byte
+	err := h.db.View(func(tx *bbolt.Tx) error {
+		b := tx.Bucket([]byte(bucket))
+		if b == nil {
+			return bbolt.ErrBucketNotFound
+		}
+		val = b.Get([]byte(key))
+		return nil
+	})
+	if val == nil {
+		return "", nil
+	}
+	return string(val), err
+}
+
+// Delete key
+func (h *BBoltHelper) Delete(bucket, key string) error {
+	h.mux.Lock()
+	defer h.mux.Unlock()
+	return h.db.Update(func(tx *bbolt.Tx) error {
+		b := tx.Bucket([]byte(bucket))
+		if b == nil {
+			return bbolt.ErrBucketNotFound
+		}
+		return b.Delete([]byte(key))
+	})
+}

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List</title>
+    <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+
+    <header>
+        <h1>My Pokémon List</h1>
+    </header>
+
+<div class="pokemon-list-container">
+  {{range .Content}}
+  <div class="pokemon-card">
+    <div class="pokemon-name">{{.Name}}</div>
+    <div class="pokedex-number">#{{.PokedexNumber}}</div>
+
+    <div class="type-container">
+      <span class="type-{{.Type1}}">{{.Type1 | upper}}</span>
+      {{if .Type2}}<span class="type-{{.Type2}}">{{.Type2 | upper}}</span>{{end}}
+    </div>
+
+    <p class="classification">Classification: {{.Classification}}</p>
+
+    <h3>Base Stats</h3>
+    <div class="stat-line"><span>HP:</span> <span class="stat-value">{{.HP}}</span></div>
+    <div class="stat-line"><span>Attack:</span> <span class="stat-value">{{.Attack}}</span></div>
+    <div class="stat-line"><span>Defense:</span> <span class="stat-value">{{.Defense}}</span></div>
+    <div class="stat-line"><span>Sp. Atk:</span> <span class="stat-value">{{.SpAttack}}</span></div>
+    <div class="stat-line"><span>Sp. Def:</span> <span class="stat-value">{{.SpDefense}}</span></div>
+    <div class="stat-line"><span>Speed:</span> <span class="stat-value">{{.Speed}}</span></div>
+    <div class="stat-line"><span>Base Total:</span> <span class="stat-value">{{.BaseTotal}}</span></div>
+
+    <h3>Other Info</h3>
+    <div class="stat-line"><span>Abilities:</span> <span class="stat-value">{{.Abilities}}</span></div>
+    <div class="stat-line"><span>Height:</span> <span class="stat-value">{{.Height}} m</span></div>
+    <div class="stat-line"><span>Weight:</span> <span class="stat-value">{{.Weight}} kg</span></div>
+  </div>
+  {{end}}
+</div>
+</body>
+</html>
